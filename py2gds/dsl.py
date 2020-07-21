@@ -112,6 +112,13 @@ class QueryBuilder:
 
     @builder
     def select(self, *returned_properties: str):
+        """
+        This function allows to select the returned properties of the query.
+
+        Args:
+            returned_properties: The names of node properties that query will return.
+
+        """
         self._returned_properties = returned_properties
 
     @builder
@@ -120,14 +127,8 @@ class QueryBuilder:
         When using this function, the query will store scores in nodes' property with name property_name.
 
         Args:
-            param1: This is the first param.
-            param2: This is a second param.
+            property_name: Name of the property where the results will be stored.
 
-        Returns:
-            This is a description of what is returned.
-
-        Raises:
-            KeyError: Raises an exception.
         """
         self._write_property = property_name
 

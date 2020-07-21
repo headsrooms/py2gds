@@ -1,5 +1,8 @@
 # py2gds
 
+![PyPI](https://img.shields.io/pypi/v/py2gds)
+[![codecov](https://codecov.io/gh/kingoodie/py2gds/branch/master/graph/badge.svg)](https://codecov.io/gh/kingoodie/configclasses)
+<a href="https://codeclimate.com/github/kingoodie/py2gds/maintainability"><img src="https://api.codeclimate.com/v1/badges/47c7a2ccca6088529369/maintainability" /></a>
 WIP.
 
 Library to build Neo4j's queries with special attention on Graph Data Science library calls.
@@ -29,5 +32,5 @@ print(pages_rank)
 
 ## Install
 
-    pip install neo4j-gds
+    pip install py2gds
     

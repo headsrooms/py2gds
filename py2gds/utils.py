@@ -9,8 +9,8 @@ def to_json_without_quotes(dictionary: Dict[Any, Any]):
     return f"{{{', '.join(strings)}}}"
 
 
-def match_clause(reference: str, label: str, filter: Dict[str, Any]):
-    filter_string = to_json_without_quotes(filter)
+def match_clause(reference: str, label: str, filters: Dict[str, Any]):
+    filter_string = to_json_without_quotes(filters)
     return f"MATCH ({reference}: {label} {filter_string})\n"
 
 

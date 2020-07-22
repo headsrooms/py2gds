@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from configclasses import configclass
 
@@ -28,6 +30,8 @@ class AppConfig:
 
 @pytest.fixture(scope="session")
 def app_config():
+    if os.getenv("GITHUB") == "True":
+        AppConfig.from_path("tests/github.env")
     return AppConfig.from_path("tests/.env")
 
 

@@ -99,8 +99,7 @@ class TaggedProjection(NativeProjection):
                 for projection_parameters in projections_parameters
             ]
 
-        else:
-            return [TaggedProjection(connection, **projection_parameters)]
+        return [TaggedProjection(connection, **projection_parameters)]
 
 
 @dataclass(frozen=True)

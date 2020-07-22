@@ -11,8 +11,7 @@ jobs:
         image: neo4j:latest
         env:
           NEO4J_AUTH: none
-          NEO4JLABS_PLUGINS:
-            - graph-data-science
+          NEO4JLABS_PLUGINS: ["graph-data-science"]
     steps:
     - uses: actions/checkout@v1
     - name: Set up Python 3.8

@@ -1,14 +1,14 @@
-from py2gds.algorithms.algorithm import AlgorithmType
-from py2gds.algorithms.rank import (
+from py2gds.algorithm import AlgorithmType
+from py2gds.connection import GraphConnection
+from py2gds.dsl import Query
+from py2gds.projection import Projection
+from py2gds.rank import (
     WriteArticleRank,
     StreamArticleRank,
     StreamPageRank,
     WritePageRank,
+    RankConfiguration,
 )
-from py2gds.algorithms.rank_configuration import RankConfiguration
-from py2gds.connection import GraphConnection
-from py2gds.dsl import Query
-from py2gds.projection import Projection
 
 
 def test_stream_articlerank(

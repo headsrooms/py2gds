@@ -1,13 +1,13 @@
-from py2gds.algorithms.rank import (
+from py2gds.connection import Connection
+from py2gds.projection import Projection
+from py2gds.queries import RemoveProperty
+from py2gds.rank import (
     StreamPageRank,
     StreamArticleRank,
     WritePageRank,
     WriteArticleRank,
+    RankConfiguration,
 )
-from py2gds.algorithms.rank_configuration import RankConfiguration
-from py2gds.connection import Connection
-from py2gds.projection import Projection
-from py2gds.queries import RemoveProperty
 
 
 def test_stream_pagerank(

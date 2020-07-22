@@ -1,24 +1,19 @@
 from dataclasses import dataclass
 from typing import Union, Tuple, Optional, List, Dict, Any
 
-from py2gds.algorithms.algorithm import (
-    Algorithm,
-    AlgorithmType,
-)
-from py2gds.algorithms.rank import (
-    WriteArticleRank,
-    WritePageRank,
-    StreamPageRank,
-    StreamArticleRank,
-)
-from py2gds.algorithms.rank_configuration import (
-    RankConfiguration,
-    RankConfigurationWithFilter,
-)
+from py2gds.algorithm import AlgorithmType, Algorithm
 from py2gds.collection import Collection
 from py2gds.connection import GraphConnection
 from py2gds.exceptions import ProjectionIsNotSetup
 from py2gds.projection import NativeProjection, ProjectionIdentity, Projection
+from py2gds.rank import (
+    WriteArticleRank,
+    WritePageRank,
+    StreamPageRank,
+    StreamArticleRank,
+    RankConfiguration,
+    RankConfigurationWithFilter,
+)
 from py2gds.utils import builder
 
 

@@ -81,7 +81,8 @@ class Algorithm(Query):
 
         return self._clean(cypher)
 
-    def _clean(self, cypher):
+    @staticmethod
+    def _clean(cypher):
         non_empty_lines = [
             stripped_line
             for line in cypher.split("\n")

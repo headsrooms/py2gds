@@ -41,6 +41,8 @@ jobs:
       run: |
         source "$HOME/.poetry/env"
         make test
+      env:
+        ENV_PATH: ./.github/workflows./.env
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1
       with:

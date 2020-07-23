@@ -11,6 +11,9 @@ jobs:
         env:
           NEO4J_AUTH: none
           NEO4JLABS_PLUGINS: graph-data-science
+        ports:
+          # Opens tcp port 7687 on the host and service container
+          - 7687:7687
     strategy:
       matrix:
         python-version: [3.8]

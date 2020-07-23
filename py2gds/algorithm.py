@@ -94,21 +94,9 @@ class Algorithm(Query):
 
 class AlgorithmConfiguration(ABC):
     @property
-    def type(self) -> AlgorithmType:
-        raise NotImplementedError
-
-    @property
     def match_lines(self):
         raise NotImplementedError
 
     @property
-    def source_nodes_names(self) -> Optional[List[str]]:
-        raise NotImplementedError
-
-    @property
     def source_nodes(self):
-        raise NotImplementedError
-
-    @property
-    def query(self):
         raise NotImplementedError

@@ -3,6 +3,7 @@
 ![PyPI](https://img.shields.io/pypi/v/py2gds)
 [![codecov](https://codecov.io/gh/kingoodie/py2gds/branch/master/graph/badge.svg)](https://codecov.io/gh/kingoodie/configclasses)
 <a href="https://codeclimate.com/github/kingoodie/py2gds/maintainability"><img src="https://api.codeclimate.com/v1/badges/47c7a2ccca6088529369/maintainability" /></a>
+[![DeepSource](https://static.deepsource.io/deepsource-badge-light-mini.svg)](https://deepsource.io/gh/kingoodie/py2gds/?ref=repository-badge)
 
 WIP.
 

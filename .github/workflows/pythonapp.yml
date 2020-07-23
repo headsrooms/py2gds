@@ -13,9 +13,10 @@ jobs:
           NEO4J_AUTH: none
           NEO4JLABS_PLUGINS: graph-data-science
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python
-    - uses: actions/setup-python@v2
+    - name: 'Checking out repo'
+      uses: actions/checkout@v2
+    - name: 'Installing Python'
+      uses: actions/setup-python@v2
       with:
         python-version: '3.x'
         architecture: 'x64'

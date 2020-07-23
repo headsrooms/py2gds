@@ -166,12 +166,22 @@ class Rank(Algorithm):
 @dataclass(frozen=True)
 class PageRank(Rank):
     @property
+    @abstractmethod
+    def operation(self) -> str:
+        raise NotImplementedError
+
+    @property
     def function_name(self) -> str:
         return "gds.pageRank"
 
 
 @dataclass(frozen=True)
 class WriteRank(Rank):
+    @property
+    @abstractmethod
+    def function_name(self) -> str:
+        raise NotImplementedError
+
     def run(self, log: bool = True) -> List[Dict[str, Any]]:
         if not self.configuration.write_property:
             raise NeededPropertyNameNotSpecified()
@@ -226,6 +236,11 @@ class WritePageRank(PageRank, WriteRank):
 
 @dataclass(frozen=True)
 class ArticleRank(Rank):
+    @property
+    @abstractmethod
+    def operation(self) -> str:
+        raise NotImplementedError
+
     @property
     def function_name(self) -> str:
         return "gds.alpha.articleRank"

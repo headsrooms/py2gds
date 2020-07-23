@@ -38,8 +38,6 @@ jobs:
         poetry update
         poetry install
     - name: Run tests
-      env:
-        GITHUB: True
       run: |
         source "$HOME/.poetry/env"
         make test

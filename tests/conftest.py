@@ -30,7 +30,7 @@ class AppConfig:
 
 @pytest.fixture(scope="session")
 def app_config():
-    if os.getenv("GITHUB") == "True":
+    if os.getenv("CI") == "true":
         AppConfig.from_path("tests/github.env")
     return AppConfig.from_path("tests/.env")
 

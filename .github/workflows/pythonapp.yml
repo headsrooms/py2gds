@@ -9,7 +9,7 @@ jobs:
       neo4j:
         image: neo4j:latest
         env:
-          NEO4J_AUTH: none
+          NEO4J_AUTH: neo4j/neo4j
           NEO4JLABS_PLUGINS: graph-data-science
         ports:
           # Opens tcp port 7687 on the host and service container

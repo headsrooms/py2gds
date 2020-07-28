@@ -3,7 +3,7 @@ import os
 import pytest
 from configclasses import configclass
 
-from py2gds.connection import GraphConnection
+from py2gds.connection import Neo4JDriverConnection, Connection
 from py2gds.projection import ProjectionIdentity, NativeProjection
 from py2gds.queries import (
     CreateNode,
@@ -35,15 +35,16 @@ def app_config():
 
 
 @pytest.fixture(scope="session")
-def graph_connection(app_config) -> GraphConnection:
-    return GraphConnection.to_py2neo(
+def graph_connection(app_config) -> Connection:
+    return Neo4JDriverConnection.create(
         uri=f"{app_config.neo4j.scheme}://{app_config.neo4j.host}:{app_config.neo4j.port}",
+        user="neo4j",
         password=app_config.neo4j.password,
     )
 
 
 @pytest.fixture
-def home_page(app_config, graph_connection: GraphConnection) -> GraphConnection:
+def home_page(app_config, graph_connection: Connection):
     new_home = Node("Page", {"name": "New Home"})
     CreateNode(graph_connection, new_home).run()
 
@@ -53,7 +54,7 @@ def home_page(app_config, graph_connection: GraphConnection) -> GraphConnection:
 
 
 @pytest.fixture(scope="session")
-def pages_and_links(app_config, graph_connection: GraphConnection) -> GraphConnection:
+def pages_and_links(app_config, graph_connection: Connection):
     home = Node("Page", {"name": "Home"}, "home")
     about = Node("Page", {"name": "About"}, "about")
     product = Node("Page", {"name": "Product"}, "product")
@@ -91,7 +92,7 @@ def pages_and_links(app_config, graph_connection: GraphConnection) -> GraphConne
 
 
 @pytest.fixture(scope="session")
-def pages_and_links_projection(graph_connection: GraphConnection, pages_and_links):
+def pages_and_links_projection(graph_connection: Connection, pages_and_links):
     projection = NativeProjection(
         graph_connection, ProjectionIdentity(labels=("Page",), relationships=("LINKS",))
     )

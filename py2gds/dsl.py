@@ -3,7 +3,7 @@ from typing import Union, Tuple, Optional, List, Dict, Any
 
 from py2gds.algorithm import AlgorithmType, Algorithm
 from py2gds.collection import Collection
-from py2gds.connection import GraphConnection
+from py2gds.connection import Connection
 from py2gds.exceptions import ProjectionIsNotSetup
 from py2gds.projection import NativeProjection, ProjectionIdentity, Projection
 from py2gds.rank import (
@@ -24,7 +24,7 @@ class QueryBuilder:
 
     """
 
-    _graph_connection: GraphConnection = None
+    _graph_connection: Connection = None
     _collection: Collection = None
     _projection: Projection = None
     _algorithm: AlgorithmType = None
@@ -69,7 +69,7 @@ class QueryBuilder:
     @builder
     def using(
         self,
-        graph_connection: Optional[GraphConnection] = None,
+        graph_connection: Optional[Connection] = None,
         collection: Optional[Collection] = None,
     ):
         self._graph_connection = graph_connection
@@ -171,7 +171,7 @@ class Query:
     @classmethod
     def using(
         cls,
-        graph_connection: GraphConnection,
+        graph_connection: Connection,
         collection: Optional[Collection] = None,
         **kwargs: Any
     ) -> QueryBuilder:

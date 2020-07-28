@@ -1,8 +1,8 @@
 from abc import ABC
 from dataclasses import dataclass
-from typing import Any, Optional, Dict, List
+from typing import Any, Dict, List
 
-from py2neo import Graph
+from neo4j import Neo4jDriver, GraphDatabase
 
 
 class Connection(ABC):
@@ -11,17 +11,13 @@ class Connection(ABC):
 
 
 @dataclass(frozen=True)
-class GraphConnection(Connection):
-    graph: Graph
+class Neo4JDriverConnection(Connection):
+    driver: Neo4jDriver
 
     @classmethod
-    def to_py2neo(
-        cls,
-        uri: Optional[str] = None,
-        name: Optional[str] = None,
-        **settings: Dict[str, Any],
-    ) -> "GraphConnection":
-        return cls(Graph(uri, name, **settings))
+    def create(cls, uri: str, user: str, password: str, ) -> "Neo4JDriverConnection":
+        return cls(GraphDatabase.driver(uri, auth=(user, password)))
 
     def execute(self, query: str) -> List[Dict[str, Any]]:
-        return self.graph.run(query).data()
+        with self.driver.session() as session:
+            return session.run(query).data()

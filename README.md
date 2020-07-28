@@ -14,12 +14,12 @@ It provides a DSL to write queries inspired in IGQL.
 ## Example
 
 ```python
-from py2gds.connection import GraphConnection
+from py2gds.connection import Neo4JDriverConnection
 from py2gds.dsl import Query
 from py2gds.algorithm import AlgorithmType
 
-graph_connection = GraphConnection.to_py2neo(
-        uri=f"{app_config.neo4j.scheme}://{app_config.neo4j.host}:{app_config.neo4j.port}",
+graph_connection = Neo4JDriverConnection.create(
+        profile=f"{app_config.neo4j.scheme}://{app_config.neo4j.host}:{app_config.neo4j.port}",
         password=app_config.neo4j.password,
     )
 

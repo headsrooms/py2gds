@@ -1,5 +1,5 @@
 from py2gds.algorithm import AlgorithmType
-from py2gds.connection import GraphConnection
+from py2gds.connection import Connection
 from py2gds.dsl import Query
 from py2gds.projection import Projection
 from py2gds.rank import (
@@ -12,7 +12,7 @@ from py2gds.rank import (
 
 
 def test_stream_articlerank(
-    graph_connection: GraphConnection, pages_and_links_projection: Projection
+    graph_connection: Connection, pages_and_links_projection: Projection
 ):
     manual_query = StreamArticleRank(
         graph_connection, pages_and_links_projection, RankConfiguration(),
@@ -28,7 +28,7 @@ def test_stream_articlerank(
 
 
 def test_write_articlerank(
-    graph_connection: GraphConnection, pages_and_links_projection: Projection
+    graph_connection: Connection, pages_and_links_projection: Projection
 ):
     manual_query = WriteArticleRank(
         graph_connection,
@@ -47,7 +47,7 @@ def test_write_articlerank(
 
 
 def test_stream_pagerank(
-    graph_connection: GraphConnection, pages_and_links_projection: Projection
+    graph_connection: Connection, pages_and_links_projection: Projection
 ):
     manual_query = StreamPageRank(
         graph_connection, pages_and_links_projection, RankConfiguration(),
@@ -63,7 +63,7 @@ def test_stream_pagerank(
 
 
 def test_write_pagerank(
-    graph_connection: GraphConnection, pages_and_links_projection: Projection
+    graph_connection: Connection, pages_and_links_projection: Projection
 ):
     manual_query = WritePageRank(
         graph_connection,
@@ -81,7 +81,7 @@ def test_write_pagerank(
     assert manual_query == str(dsl_query)
 
 
-def test_query_order(graph_connection: GraphConnection,):
+def test_query_order(graph_connection: Connection):
     dsl_query_1 = (
         Query.using(graph_connection)
         .rank(algorithm=AlgorithmType.PageRank)

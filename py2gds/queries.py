@@ -85,6 +85,23 @@ class DeleteNode(Query):
 
 
 @dataclass(frozen=True)
+class DeleteNodes(Query):
+    nodes: Iterable[Node]
+    force: bool = False
+
+    @property
+    def cypher(self) -> str:
+        delete_node_queries = [
+            DeleteNode(self.connection, node, self.force).cypher for node in self.nodes
+        ]
+        return "\n".join(delete_node_queries)
+
+    def run(self, log: bool = True) -> Any:
+        for node in self.nodes:
+            DeleteNode(self.connection, node, self.force).run(log=log)
+
+
+@dataclass(frozen=True)
 class CreateRelationShip(Query):
     relationship: Relationship
 
@@ -93,7 +110,7 @@ class CreateRelationShip(Query):
         return (
             f"MATCH {str(self.relationship.from_node)}, {str(self.relationship.to_node)} \n"
             f"CREATE ({self.relationship.from_node.reference})"
-            f"-[r:{self.relationship.name} {to_json_without_quotes(self.relationship.properties)}]->"
+            f"-[r:{self.relationship.type} {to_json_without_quotes(self.relationship.properties)}]->"
             f"({self.relationship.to_node.reference}) \n"
             f"RETURN type(r)"
         )
@@ -107,9 +124,26 @@ class DeleteRelationship(Query):
     def cypher(self) -> str:
         return (
             f"MATCH {str(self.relationship.from_node)}"
-            f"-[r:{self.relationship.name}]->{str(self.relationship.to_node)}"
+            f"-[r:{self.relationship.type}]->{str(self.relationship.to_node)}"
             f" DELETE r"
         )
+
+
+@dataclass(frozen=True)
+class DeleteRelationships(Query):
+    relationships: Iterable[Relationship]
+
+    @property
+    def cypher(self) -> str:
+        delete_relationships_queries = [
+            DeleteRelationship(self.connection, relationship).cypher
+            for relationship in self.relationships
+        ]
+        return "\n".join(delete_relationships_queries)
+
+    def run(self, log: bool = True) -> Any:
+        for relationship in self.relationships:
+            DeleteRelationship(self.connection, relationship).run(log=log)
 
 
 @dataclass(frozen=True)

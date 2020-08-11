@@ -19,13 +19,13 @@ class Node:
 @dataclass(frozen=True)
 class Relationship:
     from_node: Node
-    name: str
+    type: str
     properties: Dict[str, Any]
     to_node: Node
 
     def __str__(self):
         return (
-            f"({self.from_node.reference})-[:{self.name} "
+            f"({self.from_node.reference})-[:{self.type} "
             f"{to_json_without_quotes(self.properties)}]->({self.to_node.reference})"
         )
 

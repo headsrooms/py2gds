@@ -66,6 +66,11 @@ class Algorithm(Query):
         raise NotImplementedError
 
     @property
+    @abstractmethod
+    def skip_line(self) -> str:
+        raise NotImplementedError
+
+    @property
     def cypher(self) -> str:
         cypher = f"""{self.match_lines}
         {self.call_line}
@@ -75,6 +80,7 @@ class Algorithm(Query):
         {self.filter_line}
         {self.return_line}
         {self.order_line}
+        {self.skip_line}
         {self.limit_line}
         """
 

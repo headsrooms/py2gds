@@ -11,7 +11,8 @@ from py2gds.queries import (
     CreateNodes,
     Node,
     Relationship,
-    DeleteRelationship,
+    DeleteRelationships,
+    DeleteNodes,
 )
 
 
@@ -84,11 +85,8 @@ def pages_and_links(app_config, graph_connection: Connection):
 
     yield
 
-    for relationship in relationships:
-        DeleteRelationship(graph_connection, relationship).run()
-
-    for node in nodes:
-        DeleteNode(graph_connection, node).run()
+    DeleteRelationships(graph_connection, relationships).run()
+    DeleteNodes(graph_connection, nodes).run()
 
 
 @pytest.fixture(scope="session")

@@ -35,6 +35,10 @@ class QueryBuilder:
     _write_property: Optional[str] = None
     _filter_elements: Optional[List[Tuple[str, str, Dict[str, str]]]] = None
     _returned_properties: Optional[Tuple[str, ...]] = None
+    _sort_by_properties: Optional[Tuple[str, ...]] = None
+    _sort_descending: bool = False
+    _n_rows: Optional[int] = None
+    _first_row: Optional[int] = None
 
     @property
     def prepared_query(self):
@@ -55,14 +59,22 @@ class QueryBuilder:
                 self._graph_connection,
                 self._projection,
                 self._config,
+                limit=self._n_rows,
                 returned_properties=self._returned_properties,
+                sort_by_properties=self._sort_by_properties,
+                sort_descending=self._sort_descending,
+                skip=self._first_row,
             )
         else:
             self._prepared_query = StreamArticleRank(
                 self._graph_connection,
                 self._projection,
                 self._config,
+                limit=self._n_rows,
                 returned_properties=self._returned_properties,
+                sort_by_properties=self._sort_by_properties,
+                sort_descending=self._sort_descending,
+                skip=self._first_row,
             )
         return self._prepared_query
 
@@ -88,7 +100,7 @@ class QueryBuilder:
     ):
         if tag and not self._collection:
             raise ProjectionIsNotSetup(
-                "You must setup a collection in using's step or instead use "
+                "You must setup a collection in using step or instead use "
                 "labels and/or relationships parameters"
             )
 
@@ -115,6 +127,41 @@ class QueryBuilder:
 
         """
         self._returned_properties = returned_properties
+
+    @builder
+    def order_by(self, *sort_by_properties: str, descending: bool = False):
+        """
+        This function allows to select the returned properties of the query.
+
+        Args:
+            sort_by_properties: The names of node properties used to sort the output.
+            descending: it indicates if it is sorted in descending order or not.
+
+        """
+        self._sort_by_properties = sort_by_properties
+        self._sort_descending = descending
+
+    @builder
+    def skip(self, first_row: int):
+        """
+        SKIP defines from which row to start including the rows in the output.
+
+        Args:
+            first_row: first row from which it starts.
+
+        """
+        self._first_row = first_row
+
+    @builder
+    def limit(self, n_rows: int):
+        """
+         LIMIT constrains the number of rows in the output.
+
+        Args:
+            n_rows: number of rows of the output.
+
+        """
+        self._n_rows = n_rows
 
     @builder
     def write(self, property_name: str):
@@ -173,10 +220,10 @@ class Query:
         cls,
         graph_connection: Connection,
         collection: Optional[Collection] = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> QueryBuilder:
         """
-        Query builder entry point.Initializes query building with graph_connection and optional collection.
+        Query builder entry point. It initializes query building with graph_connection and optional collection.
 
         Args:
             graph_connection: Connection used to talk with the database.
@@ -191,7 +238,8 @@ class Query:
     @classmethod
     def rank(cls, algorithm: AlgorithmType, **kwargs: Any) -> QueryBuilder:
         """
-        Query builder entry point.Initializes query building with the algorithm that we are going to use in that query.
+        Query builder entry point. It initializes query building with the algorithm that we are going to use in that
+        query.
 
         Args:
             algorithm: Enum string that define the used algorithm.
@@ -209,14 +257,15 @@ class Query:
         labels: Union[Tuple[str, ...], str] = '"*"',
         relationships: Union[Tuple[str, ...], str] = '"*"',
         tag: Optional[str] = None,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> QueryBuilder:
         """
-        Query builder entry point.Initializes query setting the projection that query will use.
+        Query builder entry point. It initializes query setting the projection that query will use.
 
         Args:
             labels: Labels' names used to create the projection.
-            relationships: Relationships's names used to create the projection.
+            relationships: Relationships' names used to create the projection.
+            tag: if a collection is used (see using method), can get a projection by tag using this parameter.
 
         Returns:
             QueryBuilder.
@@ -229,7 +278,7 @@ class Query:
         cls, max_iterations: int, damping_factor: float, **kwargs: Any
     ) -> QueryBuilder:
         """
-        Query builder entry point. Initializes query with algorithm's parameters.
+        Query builder entry point. It initializes query with algorithm's parameters.
 
         Args:
             max_iterations: The maximum number of iterations of Rank to run.
@@ -258,7 +307,7 @@ class Query:
     @classmethod
     def select(cls, *returned_properties: List[str], **kwargs: Any):
         """
-        Query builder entry point.Initializes query with algorithm's parameters.
+        Query builder entry point. It will setup the returned properties of the resulting nodes.
 
         Args:
             returned_properties: The names of node properties that query will return.
@@ -268,3 +317,50 @@ class Query:
 
         """
         return cls._builder(**kwargs).select(*returned_properties)
+
+    @classmethod
+    def order_by(
+        cls, *sort_by_properties: List[str], descending: bool = False, **kwargs: Any
+    ):
+        """
+        Query builder entry point. ORDER BY is used to sort the output according to specified properties.
+
+        Args:
+            sort_by_properties: The names of node properties used to sort the output.
+            descending: it indicates if it is sorted in descending order or not.
+
+        Returns:
+            QueryBuilder
+
+        """
+        return cls._builder(**kwargs).order_by(
+            *sort_by_properties, descending=descending
+        )
+
+    @classmethod
+    def skip(cls, first_row: int, **kwargs: Any):
+        """
+        Query builder entry point. SKIP defines from which row to start including the rows in the output.
+
+        Args:
+            first_row: first row from which it starts.
+
+        Returns:
+            QueryBuilder
+
+        """
+        return cls._builder(**kwargs).skip(first_row)
+
+    @classmethod
+    def limit(cls, n_rows: int, **kwargs: Any):
+        """
+        Query builder entry point. LIMIT constrains the number of rows in the output.
+
+        Args:
+            n_rows: number of rows of the output
+
+        Returns:
+            QueryBuilder
+
+        """
+        return cls._builder(**kwargs).limit(n_rows)

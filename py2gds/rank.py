@@ -82,10 +82,13 @@ class RankConfigurationWithFilter(RankConfiguration):
 class Rank(Algorithm):
     projection: Projection
     configuration: RankConfiguration
-    limit: int = 100
+    limit: Optional[int] = None
     labels_filter: Optional[Iterable[str]] = None
     _additional_filter: Optional[str] = None
     returned_properties: Optional[Iterable[str]] = None
+    sort_by_properties: Optional[Iterable[str]] = None
+    sort_descending: bool = False
+    skip: Optional[int] = None
 
     @property
     def additional_filter(self) -> str:
@@ -156,11 +159,21 @@ class Rank(Algorithm):
 
     @property
     def order_line(self) -> str:
-        return "ORDER BY score DESC"
+        if self.sort_by_properties:
+            node_properties = ", ".join(
+                [f"{property}" for property in self.sort_by_properties]
+            )
+            descending_part = "DESC" if self.sort_descending else ""
+            return f"ORDER BY {node_properties} {descending_part}"
+        return ""
 
     @property
     def limit_line(self) -> str:
         return f"LIMIT {self.limit}" if self.limit else ""
+
+    @property
+    def skip_line(self) -> str:
+        return f"SKIP {self.skip}" if self.skip else ""
 
 
 @dataclass(frozen=True)

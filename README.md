@@ -19,7 +19,8 @@ from py2gds.dsl import Query
 from py2gds.algorithm import AlgorithmType
 
 graph_connection = Neo4JDriverConnection.create(
-        profile=f"{app_config.neo4j.scheme}://{app_config.neo4j.host}:{app_config.neo4j.port}",
+        uri=f"{app_config.neo4j.scheme}://{app_config.neo4j.host}:{app_config.neo4j.port}",
+        user=app_config.neo4.user,
         password=app_config.neo4j.password,
     )
 
